@@ -159,8 +159,8 @@ const structuredData = {
   "image": new URL("/og.jpg", siteUrl).href,
   "description": "Premium PA systems, digital consoles, wireless mics, and live audio engineering serving DC, Maryland, and Virginia.",
   "url": siteUrl,
-  "telephone": "+1-202-555-0143",
-  "email": "bookings@tunedaudio.com",
+  "telephone": "+1-202-853-1250",
+  "email": "sadaf3817@gmail.com",
   "areaServed": [
     { "@type": "City", "name": "Washington, DC" },
     { "@type": "State", "name": "Maryland" },
@@ -524,7 +524,7 @@ function Index() {
         {/* PORTFOLIO */}
         <section id="portfolio" className="border-t border-border/60 py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeader eyebrow="Protfolio" title="Selected video work." />
+            <SectionHeader eyebrow="Protfolio" title="Live productions, captured." />
 
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {portfolioVideos.map((video) => (
@@ -532,35 +532,15 @@ function Index() {
                   key={video.playerUrl}
                   className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-glow"
                 >
-                  <div className="relative overflow-hidden bg-muted">
-                    <img
-                      src={video.posterUrl}
-                      alt={video.title}
+                  <div className="overflow-hidden rounded-2xl bg-black/90">
+                    <iframe
+                      src={video.playerUrl}
+                      title={video.title}
                       loading="lazy"
-                      decoding="async"
-                      className="aspect-video h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="aspect-video h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                      allowFullScreen
                     />
-                    <div className="absolute inset-0 bg-linear-to-t from-background/40 via-transparent to-transparent" />
-                  </div>
-
-                  <div className="space-y-4 p-5 sm:p-6">
-                    <div>
-                      <h3 className="text-base font-bold text-foreground">{video.title}</h3>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Streamed remotely from Cloudinary with inline player controls.
-                      </p>
-                    </div>
-
-                    <div className="overflow-hidden rounded-xl border border-border bg-black/90 shadow-sm">
-                      <iframe
-                        src={video.playerUrl}
-                        title={video.title}
-                        loading="lazy"
-                        className="aspect-video h-full w-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                        allowFullScreen
-                      />
-                    </div>
                   </div>
                 </article>
               ))}
@@ -653,8 +633,8 @@ function Index() {
 
                 <div className="mt-10 space-y-4 rounded-2xl border border-border bg-card p-6">
                   <ContactRow icon={MapPin} title="Coverage" value="DC · Maryland · Virginia" />
-                  <ContactRow icon={Mail} title="Email" value="bookings@tunedaudio.com" />
-                  <ContactRow icon={Phone} title="Phone" value="(202) 555-0143" />
+                  <ContactRow icon={Mail} title="Email" value="sadaf3817@gmail.com" />
+                  <ContactRow icon={Phone} title="Phone" value="202-853-1250" />
                 </div>
 
                 <ul className="mt-8 space-y-3 text-sm">
