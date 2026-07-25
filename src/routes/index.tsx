@@ -88,6 +88,29 @@ const tabs: { value: GearCategory; label: string; icon: typeof Mic2 }[] = [
   { value: "microphones", label: "Microphones", icon: Mic2 },
 ];
 
+type PortfolioVideo = {
+  title: string;
+  playerUrl: string;
+  posterUrl: string;
+};
+
+const portfolioVideos: PortfolioVideo[] = [
+  "Program_1_jterfl",
+  "Program_2_omu3r4",
+  "Program_3_ypcsmj",
+  "Program_4_plb1c2",
+  "Program_5_l2kxjg",
+  "Program_6_xwhsnt",
+  "Program_7_ct0swv",
+  "Program_8_am4ebf",
+  "Program_9_az9wvo",
+  "Program_10_hvmult",
+].map((publicId, index) => ({
+  title: `Portfolio ${index + 1}`,
+  playerUrl: `https://player.cloudinary.com/embed/?cloud_name=qyaa2b3r&public_id=${publicId}`,
+  posterUrl: `https://res.cloudinary.com/qyaa2b3r/video/upload/so_0/${publicId}.jpg`,
+}));
+
 const reviews: { quote: string; author: string; role?: string }[] = [
   {
     quote:
@@ -318,7 +341,7 @@ function Index() {
             </h1>
             <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
               Professional live sound production with premium gear, optimized for
-              small-to-medium events of 1,000 to 2,000 people across the DMV area.
+              small-to-medium events of 100 to 1,000 people across the DMV area.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-glow">
@@ -331,7 +354,7 @@ function Index() {
 
             <div className="mt-16 grid max-w-2xl grid-cols-2 gap-6 border-t border-border/60 pt-8">
               {[
-                { k: "1K–2K", v: "Crowd capacity" },
+                { k: "100 – 1K", v: "Crowd capacity" },
                 { k: "DMV", v: "DC · MD · VA" },
               ].map((s) => (
                 <div key={s.v}>
@@ -495,6 +518,53 @@ function Index() {
                 </TabsContent>
               ))}
             </Tabs>
+          </div>
+        </section>
+
+        {/* PORTFOLIO */}
+        <section id="portfolio" className="border-t border-border/60 py-24 sm:py-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <SectionHeader eyebrow="Protfolio" title="Selected video work." />
+
+            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {portfolioVideos.map((video) => (
+                <article
+                  key={video.playerUrl}
+                  className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-glow"
+                >
+                  <div className="relative overflow-hidden bg-muted">
+                    <img
+                      src={video.posterUrl}
+                      alt={video.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-video h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-background/40 via-transparent to-transparent" />
+                  </div>
+
+                  <div className="space-y-4 p-5 sm:p-6">
+                    <div>
+                      <h3 className="text-base font-bold text-foreground">{video.title}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Streamed remotely from Cloudinary with inline player controls.
+                      </p>
+                    </div>
+
+                    <div className="overflow-hidden rounded-xl border border-border bg-black/90 shadow-sm">
+                      <iframe
+                        src={video.playerUrl}
+                        title={video.title}
+                        loading="lazy"
+                        className="aspect-video h-full w-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
