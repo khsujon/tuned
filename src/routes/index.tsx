@@ -21,12 +21,18 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import heroImg from "@/assets/hero-console.jpg";
 import gearConsole from "@/assets/gear-console.jpg";
-import gearBackline from "@/assets/gear-backline.jpg";
 import gearSpeakers from "@/assets/gear-speakers.jpg";
 import gearMic from "@/assets/gear-mic.jpg";
+import midasM32Img from "@/assets/Midas M32.png";
+import midasBehringerRackImg from "@/assets/midas_behringer_rack.png";
+import qscSubwoofersImg from "@/assets/QSC & RCF Subwoofers.png";
+import qscK122Img from "@/assets/QSC K12.2 Powered Speakers.png";
+import rcfLineArrayImg from "@/assets/RCF Line Array (3x3).png";
+import yamahaDbr12Img from "@/assets/Yamaha DBR12 Powered Speakers.png";
+import yamahaTf3Img from "@/assets/yamaha_tf3.png";
+import shureMicsImg from "@/assets/shure_mics.png";
 
 const siteUrl = import.meta.env.VITE_SITE_URL ?? "http://localhost:5173";
-const lovableAssetUrl = (path: string) => `https://shobdo-sonic-glow.lovable.app${path.startsWith("/") ? path : `/${path}`}`;
 
 
 const navLinks = [
@@ -61,18 +67,18 @@ type GearCategory = "consoles" | "speakers" | "microphones";
 
 const gearItems: Record<GearCategory, { name: string; spec: string; image: string }[]> = {
   consoles: [
-    { name: "Midas M32", spec: "Industry-standard 40-input digital live console", image: lovableAssetUrl("/__l5e/assets-v1/932d96a4-7f4b-4eb8-862b-b9ce2d50a898/midas_m32.png") },
-    { name: "Yamaha TF3", spec: "48 mono inputs · TouchFlow workflow", image: lovableAssetUrl("/__l5e/assets-v1/21a1e05d-481a-4c74-99c4-41485e076799/yamaha_tf3.png") },
-    { name: "Behringer XAir, Midas MR18, Midas M32C", spec: "Compact rack & wireless-control digital mixers", image: lovableAssetUrl("/__l5e/assets-v1/b0730dfc-9200-4bee-a73f-bd657785d048/midas_behringer_rack.png") },
+    { name: "Midas M32", spec: "Industry-standard 40-input digital live console", image: midasM32Img },
+    { name: "Yamaha TF3", spec: "48 mono inputs · TouchFlow workflow", image: yamahaTf3Img },
+    { name: "Behringer XAir, Midas MR18, Midas M32C", spec: "Compact rack & wireless-control digital mixers", image: midasBehringerRackImg },
   ],
   speakers: [
-    { name: "RCF Line Array (3x3)", spec: "Engineered for 1,000–2,000 person crowd coverage", image: lovableAssetUrl("/__l5e/assets-v1/a30a15ae-eda5-4e11-8773-708815f640ba/rcf_black.png") },
-    { name: "QSC & RCF Subwoofers", spec: "High-impact low end for outdoor festivals", image: lovableAssetUrl("/__l5e/assets-v1/78815b2b-f323-4d73-9dcc-4e3f6e4fd488/qsc_subs.png") },
-    { name: "QSC K12.2 Powered Speakers", spec: "2,000W active tops · monitors or fills", image: lovableAssetUrl("/__l5e/assets-v1/7a7ddff4-82ba-4a55-8005-9ca46925b1c0/qsc_k122.png") },
-    { name: "Yamaha DBR12 Powered Speakers", spec: "Reliable powered tops for fills & breakouts", image: lovableAssetUrl("/__l5e/assets-v1/d39432fc-edb8-47d2-8b59-5d6146af5c76/yamaha_dbr12.png") },
+    { name: "RCF Line Array (3x3)", spec: "Engineered for 1,000–2,000 person crowd coverage", image: rcfLineArrayImg },
+    { name: "QSC & RCF Subwoofers", spec: "High-impact low end for outdoor festivals", image: qscSubwoofersImg },
+    { name: "QSC K12.2 Powered Speakers", spec: "2,000W active tops · monitors or fills", image: qscK122Img },
+    { name: "Yamaha DBR12 Powered Speakers", spec: "Reliable powered tops for fills & breakouts", image: yamahaDbr12Img },
   ],
   microphones: [
-    { name: "Shure SM57 / SM58 / Beta 58", spec: "Industry-standard dynamic vocal & instrument mics", image: lovableAssetUrl("/__l5e/assets-v1/0aebe5bc-6ca7-454d-b3b9-d8361df975c6/shure_mics.png") },
+    { name: "Shure SM57 / SM58 / Beta 58", spec: "Industry-standard dynamic vocal & instrument mics", image: shureMicsImg },
   ],
 };
 
