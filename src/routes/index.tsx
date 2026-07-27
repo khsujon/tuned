@@ -91,7 +91,7 @@ const tabs: { value: GearCategory; label: string; icon: typeof Mic2 }[] = [
 
 type PortfolioVideo = {
   title: string;
-  playerUrl: string;
+  videoUrl: string;
   posterUrl: string;
 };
 
@@ -108,7 +108,7 @@ const portfolioVideos: PortfolioVideo[] = [
   "Program_10_hvmult",
 ].map((publicId, index) => ({
   title: `Portfolio ${index + 1}`,
-  playerUrl: `https://player.cloudinary.com/embed/?cloud_name=qyaa2b3r&public_id=${publicId}`,
+  videoUrl: `https://res.cloudinary.com/qyaa2b3r/video/upload/f_auto,q_auto/${publicId}.mp4`,
   posterUrl: `https://res.cloudinary.com/qyaa2b3r/video/upload/so_0/${publicId}.jpg`,
 }));
 
@@ -368,67 +368,7 @@ function Index() {
         </section>
 
         {/* ABOUT */}
-        <section id="about-tuned" className="border-t border-border/60 py-24 sm:py-32">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <SectionHeader eyebrow="Our Story" title="About Tuned." />
-            <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
-              <div className="space-y-6 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                <p>
-                  Tuned was built from a genuine love for live sound. What started as a small setup in
-                  a family garage has grown into providing professional audio services for medium-sized
-                  concerts, festivals, weddings, corporate events, and community gatherings.
-                </p>
-                <p>
-                  <span className="font-semibold text-foreground">
-                    Our goal has never been to become the biggest-and we never intend to be.
-                  </span>{" "}
-                  We're passionate about creating memorable experiences through great sound and helping every
-                  event sound its best.
-                </p>
-                <p>
-                  We believe professional-quality audio should be accessible to everyone.{" "}
-                  <span className="font-semibold text-foreground">
-                    That's why we keep our pricing fair and often below the industry average,
-                  </span>{" "}
-                  making high-quality sound more affordable for local communities and event organizers.
-                </p>
-                <p>
-                  At the end of the day, we're simply people who love the craft of live sound-and we're
-                  excited to share that passion with every event we serve.
-                </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-                <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
-                  <img
-                    src={gearConsole}
-                    alt="Tuned audio mixing console"
-                    className="h-56 w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
-                  <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
-                    <img
-                      src={gearSpeakers}
-                      alt="Speaker and PA equipment"
-                      className="h-44 w-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
-                    <img
-                      src={gearMic}
-                      alt="Microphone setup for live events"
-                      className="h-44 w-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <AboutTunedSection />
 
         {/* ABOUT — LEADERSHIP */}
         <LeadershipSection />
@@ -519,17 +459,16 @@ function Index() {
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {portfolioVideos.map((video) => (
                 <article
-                  key={video.playerUrl}
+                  key={video.videoUrl}
                   className="group overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:border-primary/50 hover:shadow-glow"
                 >
                   <div className="overflow-hidden rounded-2xl bg-black/90">
-                    <iframe
-                      src={video.playerUrl}
-                      title={video.title}
-                      loading="lazy"
-                      className="aspect-video h-full w-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                      allowFullScreen
+                    <video
+                      src={video.videoUrl}
+                      poster={video.posterUrl}
+                      controls
+                      preload="metadata"
+                      className="aspect-video h-full w-full object-cover"
                     />
                   </div>
                 </article>
@@ -835,6 +774,102 @@ function LeadershipSection() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AboutTunedSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [vis, setVis] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVis(true); observer.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const reveal = (delay: number, axis: "Y" | "X" = "Y", dist = 40): React.CSSProperties => ({
+    opacity: vis ? 1 : 0,
+    transform: vis ? "translate(0,0)" : axis === "Y" ? `translateY(${dist}px)` : `translateX(${dist}px)`,
+    transition: `opacity 0.75s ${delay}s cubic-bezier(0.22,1,0.36,1), transform 0.75s ${delay}s cubic-bezier(0.22,1,0.36,1)`,
+  });
+
+  return (
+    <section id="about-tuned" ref={sectionRef} className="border-t border-border/60 py-24 sm:py-32">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+
+        {/* Header */}
+        <div style={reveal(0)} className="max-w-2xl">
+          <span className="text-xs font-semibold uppercase tracking-widest text-primary">Our Story</span>
+          <h2 className="mt-3 text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">About Tuned.</h2>
+        </div>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+
+          {/* Text column */}
+          <div className="space-y-6 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p style={reveal(0.15)}>
+              Tuned was built from a genuine love for live sound. What started as a small setup in
+              a family garage has grown into providing professional audio services for medium-sized
+              concerts, festivals, weddings, corporate events, and community gatherings.
+            </p>
+            <p style={reveal(0.28)}>
+              <span className="font-semibold text-foreground">
+                Our goal has never been to become the biggest-and we never intend to be.
+              </span>{" "}
+              We're passionate about creating memorable experiences through great sound and helping every
+              event sound its best.
+            </p>
+            <p style={reveal(0.41)}>
+              We believe professional-quality audio should be accessible to everyone.{" "}
+              <span className="font-semibold text-foreground">
+                That's why we keep our pricing fair and often below the industry average,
+              </span>{" "}
+              making high-quality sound more affordable for local communities and event organizers.
+            </p>
+            <p style={reveal(0.54)}>
+              At the end of the day, we're simply people who love the craft of live sound-and we're
+              excited to share that passion with every event we serve.
+            </p>
+          </div>
+
+          {/* Image column */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+            <div style={reveal(0.22, "X", 50)} className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
+              <img
+                src={gearConsole}
+                alt="Tuned audio mixing console"
+                className="h-56 w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-2">
+              <div style={reveal(0.38, "X", 50)} className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
+                <img
+                  src={gearSpeakers}
+                  alt="Speaker and PA equipment"
+                  className="h-44 w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div style={reveal(0.52, "X", 50)} className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg">
+                <img
+                  src={gearMic}
+                  alt="Microphone setup for live events"
+                  className="h-44 w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
