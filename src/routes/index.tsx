@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Menu, X, Mic2, Settings2, Sliders, Speaker,
   ShieldCheck, Wrench, Truck, Sparkles,
@@ -31,6 +31,7 @@ import rcfLineArrayImg from "@/assets/RCF Line Array (3x3).png";
 import yamahaDbr12Img from "@/assets/Yamaha DBR12 Powered Speakers.png";
 import yamahaTf3Img from "@/assets/yamaha_tf3.png";
 import shureMicsImg from "@/assets/shure_mics.png";
+import sadafImg from "@/assets/sadaf.jpeg";
 
 const siteUrl = import.meta.env.VITE_SITE_URL ?? "http://localhost:5173";
 
@@ -430,18 +431,7 @@ function Index() {
         </section>
 
         {/* ABOUT — LEADERSHIP */}
-        <section id="about" className="border-t border-border/60 py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-              <h2 className="text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
-                Led by Ahsan Sadaf.
-              </h2>
-              <p className="mt-6 text-sm uppercase tracking-widest text-primary">
-                CEO & Lead Sound Engineer
-              </p>
-            </div>
-          </div>
-        </section>
+        <LeadershipSection />
 
         {/* SERVICES */}
         <section id="services" className="border-t border-border/60 py-24 sm:py-32">
@@ -727,6 +717,127 @@ function Index() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function LeadershipSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section
+      id="about"
+      ref={sectionRef}
+      className="relative border-t border-border/60 py-24 sm:py-32 overflow-hidden"
+    >
+      {/* ambient background glow */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl" />
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div
+          className="flex flex-col items-center gap-12 lg:flex-row lg:items-center lg:gap-20"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(48px)",
+            transition: "opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)",
+          }}
+        >
+          {/* Photo with glowing border */}
+          <div className="relative shrink-0 flex items-center justify-center">
+            {/* spinning glow ring */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                inset: "-6px",
+                background: "conic-gradient(from 0deg, oklch(0.72 0.20 48), oklch(0.78 0.21 65), oklch(0.72 0.20 48) 50%, transparent 65%, transparent 85%, oklch(0.72 0.20 48))",
+                animation: "spin 4s linear infinite",
+                borderRadius: "50%",
+              }}
+            />
+            {/* solid border ring under image */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                inset: "-3px",
+                background: "oklch(0.72 0.20 48 / 0.6)",
+                borderRadius: "50%",
+              }}
+            />
+            {/* outer pulsing ambient glow */}
+            <div
+              className="absolute rounded-full animate-pulse"
+              style={{
+                inset: "-20px",
+                background: "radial-gradient(circle, oklch(0.72 0.20 48 / 0.25) 0%, transparent 70%)",
+                borderRadius: "50%",
+              }}
+            />
+            {/* photo */}
+            <img
+              src={sadafImg}
+              alt="Ahsan Sadaf — CEO & Lead Sound Engineer at Tuned"
+              loading="lazy"
+              className="relative z-10 rounded-full bg-card object-cover object-top shadow-2xl"
+              style={{
+                width: "clamp(200px, 35vw, 280px)",
+                height: "clamp(200px, 35vw, 280px)",
+                border: "4px solid var(--color-background)",
+              }}
+            />
+          </div>
+
+          {/* Text */}
+          <div
+            className="flex-1 text-center lg:text-left"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateX(0)" : "translateX(32px)",
+              transition: "opacity 0.9s 0.2s cubic-bezier(0.22,1,0.36,1), transform 0.9s 0.2s cubic-bezier(0.22,1,0.36,1)",
+            }}
+          >
+
+            <h2 className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
+              Led by{" "}
+              <span className="text-gradient-primary">Ahsan Sadaf.</span>
+            </h2>
+            <span className="py-3 text-xs font-bold uppercase tracking-widest text-primary">
+              CEO & Lead Sound Engineer
+            </span>
+            <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-lg" style={{ maxWidth: "36rem" }}>
+              With over a decade of experience in live sound, Ahsan combines technical
+              precision with a musician's ear. He leads every project with the philosophy
+              that the audience experience is paramount — ensuring every frequency is
+              balanced, every voice is clear, and every event is unforgettable.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-6 lg:justify-start">
+              {[
+                { k: "10+", v: "Years of Experience" },
+                { k: "500+", v: "Events Engineered" },
+                { k: "5★", v: "Average Rating" },
+              ].map((s) => (
+                <div key={s.v} className="text-center lg:text-left">
+                  <div className="text-2xl font-extrabold text-foreground sm:text-3xl">{s.k}</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">{s.v}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
