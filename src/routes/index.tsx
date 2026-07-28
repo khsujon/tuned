@@ -662,6 +662,7 @@ function Index() {
                       onChange={handleChange}
                       required
                       maxLength={100}
+                      className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25"
                     />
                   </Field>
                   <Field id="email" label="Email" required>
@@ -673,6 +674,7 @@ function Index() {
                       onChange={handleChange}
                       required
                       maxLength={255}
+                      className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25"
                     />
                   </Field>
                   <Field id="date" label="Event Date" required>
@@ -683,6 +685,7 @@ function Index() {
                       value={formData.date}
                       onChange={handleChange}
                       required
+                      className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25 [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                     />
                   </Field>
                   <Field id="location" label="Event Location" required>
@@ -693,6 +696,7 @@ function Index() {
                       onChange={handleChange}
                       required
                       maxLength={200}
+                      className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25"
                     />
                   </Field>
                   <Field id="crowd" label="Estimated Crowd Size">
@@ -701,7 +705,7 @@ function Index() {
                       value={formData.crowd}
                       onValueChange={(val) => setFormData((prev) => ({ ...prev, crowd: val }))}
                     >
-                      <SelectTrigger id="crowd">
+                      <SelectTrigger id="crowd" className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/25">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -717,7 +721,7 @@ function Index() {
                       value={formData.service}
                       onValueChange={(val) => setFormData((prev) => ({ ...prev, service: val }))}
                     >
-                      <SelectTrigger id="service">
+                      <SelectTrigger id="service" className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/25">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -735,6 +739,7 @@ function Index() {
                       value={formData.details}
                       onChange={handleChange}
                       maxLength={2000}
+                      className="border-primary/20 bg-background/60 transition-all duration-200 hover:border-primary/50 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/25"
                     />
                   </Field>
                 </div>

@@ -186,3 +186,9 @@
   to { transform: rotate(360deg); }
 }
 
+/* Orange calendar picker indicator for date inputs */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(53%) sepia(87%) saturate(2254%) hue-rotate(358deg) brightness(101%) contrast(104%);
+}
+
