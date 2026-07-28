@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import {
   Menu, X, Mic2, Settings2, Sliders, Speaker,
   ShieldCheck, Wrench, Truck, Sparkles,
-  MapPin, Mail, Phone, ArrowRight, CheckCircle2, Quote,
+  MapPin, Mail, Phone, ArrowRight, CheckCircle2, Quote, Loader2,
 } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -252,12 +253,84 @@ function Index() {
     };
   }, [reviewsApi]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    date: "",
+    location: "",
+    crowd: "1000-2000",
+    service: "full",
+    details: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success("Quote request sent", {
-      description: "Our team will follow up within one business day.",
-    });
-    (e.target as HTMLFormElement).reset();
+
+    // Field validation
+    if (!formData.name.trim()) {
+      toast.error("Please enter your name.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    if (!formData.date.trim()) {
+      toast.error("Please select an event date.");
+      return;
+    }
+    if (!formData.location.trim()) {
+      toast.error("Please enter an event location.");
+      return;
+    }
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      toast.error("EmailJS environment configuration is missing.");
+      return;
+    }
+
+    const templateParams = {
+      name: String(formData.name).trim(),
+      email: String(formData.email).trim(),
+      event_date: String(formData.date).trim(),
+      event_location: String(formData.location).trim(),
+      crowd_size: String(formData.crowd).trim(),
+      service: String(formData.service).trim(),
+      message: String(formData.details).trim(),
+    };
+
+    setIsSubmitting(true);
+    try {
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      toast.success("Message sent successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        date: "",
+        location: "",
+        crowd: "1000-2000",
+        service: "full",
+        details: "",
+      });
+    } catch (error) {
+      console.error("EmailJS error:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -582,19 +655,52 @@ function Index() {
               >
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field id="name" label="Name" required>
-                    <Input id="name" name="name" required placeholder="Jane Smith" maxLength={100} />
+                    <Input
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      maxLength={100}
+                    />
                   </Field>
                   <Field id="email" label="Email" required>
-                    <Input id="email" name="email" type="email" required placeholder="jane@venue.com" maxLength={255} />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      maxLength={255}
+                    />
                   </Field>
                   <Field id="date" label="Event Date" required>
-                    <Input id="date" name="date" type="date" required />
+                    <Input
+                      id="date"
+                      name="date"
+                      type="date"
+                      value={formData.date}
+                      onChange={handleChange}
+                      required
+                    />
                   </Field>
                   <Field id="location" label="Event Location" required>
-                    <Input id="location" name="location" required placeholder="Washington, DC" maxLength={200} />
+                    <Input
+                      id="location"
+                      name="location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      required
+                      maxLength={200}
+                    />
                   </Field>
                   <Field id="crowd" label="Estimated Crowd Size">
-                    <Select name="crowd" defaultValue="1000-2000">
+                    <Select
+                      name="crowd"
+                      value={formData.crowd}
+                      onValueChange={(val) => setFormData((prev) => ({ ...prev, crowd: val }))}
+                    >
                       <SelectTrigger id="crowd">
                         <SelectValue />
                       </SelectTrigger>
@@ -606,7 +712,11 @@ function Index() {
                     </Select>
                   </Field>
                   <Field id="service" label="Service Needed">
-                    <Select name="service" defaultValue="full">
+                    <Select
+                      name="service"
+                      value={formData.service}
+                      onValueChange={(val) => setFormData((prev) => ({ ...prev, service: val }))}
+                    >
                       <SelectTrigger id="service">
                         <SelectValue />
                       </SelectTrigger>
@@ -622,7 +732,8 @@ function Index() {
                       id="details"
                       name="details"
                       rows={5}
-                      placeholder="Venue size, headcount, performers, channel count, anything specific…"
+                      value={formData.details}
+                      onChange={handleChange}
                       maxLength={2000}
                     />
                   </Field>
@@ -630,9 +741,19 @@ function Index() {
                 <Button
                   type="submit"
                   size="lg"
+                  disabled={isSubmitting}
                   className="mt-6 w-full bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-glow sm:w-auto"
                 >
-                  Send Booking Request <ArrowRight className="ml-2 h-4 w-4" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Booking Request <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  )}
                 </Button>
               </form>
             </div>
@@ -756,16 +877,20 @@ function LeadershipSection() {
               CEO & Lead Sound Engineer
             </span>
             <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-lg" style={{ maxWidth: "36rem" }}>
-              With over a decade of experience in live sound, Ahsan combines technical
-              precision with a musician's ear. He leads every project with the philosophy
-              that the audience experience is paramount — ensuring every frequency is
-              balanced, every voice is clear, and every event is unforgettable.
+              Sadaf earned his degree in Sound Design from UMD and
+              has spent the past five years working alongside some
+              of the area’s top sound engineers. Over the years, he
+              carefully saved and invested in professional audio gear,
+              turning a long-time dream into Tuned Audio Services.
+              Today, he leads the company, blending technical expertise
+              with a musician’s ear to make every event sound its best.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-6 lg:justify-start">
               {[
-                { k: "10+", v: "Years of Experience" },
-                { k: "500+", v: "Events Engineered" },
-                { k: "5★", v: "Average Rating" },
+                { k: "5+", v: "Years of Experience" },
+                { k: "50+", v: "Events Engineered" },
+                { k: "4.5★", v: "Average Rating" },
+                { k: "96%", v: "Client Satisfaction" },
               ].map((s) => (
                 <div key={s.v} className="text-center lg:text-left">
                   <div className="text-2xl font-extrabold text-foreground sm:text-3xl">{s.k}</div>
