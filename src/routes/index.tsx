@@ -33,6 +33,7 @@ import yamahaDbr12Img from "@/assets/Yamaha DBR12 Powered Speakers.png";
 import yamahaTf3Img from "@/assets/yamaha_tf3.png";
 import shureMicsImg from "@/assets/shure_mics.png";
 import sadafImg from "@/assets/sadaf.jpeg";
+import tunedLogo from "@/assets/tuned logo.png";
 
 const siteUrl = import.meta.env.VITE_SITE_URL ?? "http://localhost:5173";
 
@@ -41,6 +42,7 @@ const navLinks = [
   { href: "#about", label: "About" },
   { href: "#services", label: "Services" },
   { href: "#gear", label: "Gear Inventory" },
+  { href: "#portfolio", label: "Portfolio" },
   { href: "#reviews", label: "Reviews" },
   { href: "#contact", label: "Contact" },
 ];
@@ -196,6 +198,9 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: "/og.jpg" },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: tunedLogo },
+      { rel: "shortcut icon", type: "image/png", href: tunedLogo },
+      { rel: "apple-touch-icon", href: tunedLogo },
       { rel: "canonical", href: siteUrl },
     ],
     scripts: [
@@ -527,7 +532,7 @@ function Index() {
         {/* PORTFOLIO */}
         <section id="portfolio" className="border-t border-border/60 py-24 sm:py-32">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeader eyebrow="Protfolio" title="Live productions, captured." />
+            <SectionHeader eyebrow="Portfolio" title="Live productions, captured." />
 
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {portfolioVideos.map((video) => (

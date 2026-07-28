@@ -10,6 +10,7 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import tunedLogo from "../assets/tuned logo.png";
 
 function NotFoundComponent() {
   return (
@@ -84,6 +85,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Premium sound system rentals, live audio engineering, and full event production serving DC, Maryland, and Virginia." },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: tunedLogo },
+      { rel: "shortcut icon", type: "image/png", href: tunedLogo },
+      { rel: "apple-touch-icon", href: tunedLogo },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap" },
