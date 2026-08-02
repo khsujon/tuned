@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Menu, X, Mic2, Settings2, Sliders, Speaker,
@@ -33,10 +32,8 @@ import yamahaDbr12Img from "@/assets/Yamaha DBR12 Powered Speakers.png";
 import yamahaTf3Img from "@/assets/yamaha_tf3.png";
 import shureMicsImg from "@/assets/shure_mics.png";
 import sadafImg from "@/assets/sadaf.jpeg";
-import tunedLogo from "@/assets/tuned logo.png";
 
 const siteUrl = import.meta.env.VITE_SITE_URL ?? "http://localhost:5173";
-
 
 const navLinks = [
   { href: "#about", label: "About" },
@@ -188,32 +185,13 @@ const structuredData = {
   })),
 };
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Tuned — Audio Services | Pro Sound Rental in the DMV" },
-      { name: "description", content: "Premium PA systems, digital consoles, wireless mics, and live audio engineering serving DC, Maryland, and Virginia." },
-      { property: "og:title", content: "Tuned — Audio Services | Pro Sound in the DMV" },
-      { property: "og:description", content: "Premium sound rentals, live engineering, and event production across the DMV." },
-      { property: "og:image", content: "/og.jpg" },
-    ],
-    links: [
-      { rel: "icon", type: "image/png", href: tunedLogo },
-      { rel: "shortcut icon", type: "image/png", href: tunedLogo },
-      { rel: "apple-touch-icon", href: tunedLogo },
-      { rel: "canonical", href: siteUrl },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify(structuredData),
-      },
-    ],
-  }),
-  component: Index,
-});
+// Inject structured data into <head> at runtime
+const script = document.createElement("script");
+script.type = "application/ld+json";
+script.textContent = JSON.stringify(structuredData);
+document.head.appendChild(script);
 
-function Index() {
+export default function App() {
   const [open, setOpen] = useState(false);
   const [reviewsApi, setReviewsApi] = useState<import("embla-carousel-react").UseEmblaCarouselType[1] | null>(null);
   const [selectedReviewIndex, setSelectedReviewIndex] = useState(0);
@@ -573,7 +551,6 @@ function Index() {
           </div>
         </section>
 
-        {/* CONTACT */}
         {/* REVIEWS */}
         <section id="reviews" className="border-t border-border/60 py-24 sm:py-32">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -889,11 +866,11 @@ function LeadershipSection() {
             <p className="mt-6 text-base leading-relaxed text-muted-foreground sm:text-lg" style={{ maxWidth: "36rem" }}>
               Sadaf earned his degree in Sound Design from UMD and
               has spent the past five years working alongside some
-              of the area’s top sound engineers. Over the years, he
+              of the area's top sound engineers. Over the years, he
               carefully saved and invested in professional audio gear,
               turning a long-time dream into Tuned Audio Services.
               Today, he leads the company, blending technical expertise
-              with a musician’s ear to make every event sound its best.
+              with a musician's ear to make every event sound its best.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-6 lg:justify-start">
               {[
