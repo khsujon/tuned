@@ -280,8 +280,22 @@ export default function App() {
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
+    // Log which env vars are present (never log the values themselves)
+    console.info("[EmailJS] env check:", {
+      VITE_EMAILJS_SERVICE_ID: serviceId ? `set (${serviceId.length} chars)` : "MISSING",
+      VITE_EMAILJS_TEMPLATE_ID: templateId ? `set (${templateId.length} chars)` : "MISSING",
+      VITE_EMAILJS_PUBLIC_KEY: publicKey ? `set (${publicKey.length} chars)` : "MISSING",
+    });
+
     if (!serviceId || !templateId || !publicKey) {
-      toast.error("EmailJS environment configuration is missing.");
+      const missing = [
+        !serviceId && "VITE_EMAILJS_SERVICE_ID",
+        !templateId && "VITE_EMAILJS_TEMPLATE_ID",
+        !publicKey && "VITE_EMAILJS_PUBLIC_KEY",
+      ].filter(Boolean).join(", ");
+      const msg = `EmailJS config missing: ${missing}`;
+      console.error("[EmailJS]", msg);
+      toast.error(msg);
       return;
     }
 
@@ -296,8 +310,14 @@ export default function App() {
     };
 
     setIsSubmitting(true);
+    console.info("[EmailJS] Sending…", {
+      serviceId,
+      templateId,
+      templateParams,
+    });
     try {
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      console.info("[EmailJS] Success:", result);
       toast.success("Message sent successfully!");
       setFormData({
         name: "",
@@ -308,9 +328,27 @@ export default function App() {
         service: "full",
         details: "",
       });
-    } catch (error) {
-      console.error("EmailJS error:", error);
-      toast.error("Failed to send message. Please try again.");
+    } catch (error: unknown) {
+      // EmailJS throws a plain object { status: number, text: string } on API errors.
+      // It throws a standard Error on network failures.
+      if (
+        error !== null &&
+        typeof error === "object" &&
+        "status" in error &&
+        "text" in error
+      ) {
+        const ejsError = error as { status: number; text: string };
+        const msg = `EmailJS API error — status ${ejsError.status}: ${ejsError.text}`;
+        console.error("[EmailJS]", msg, ejsError);
+        toast.error(msg, { duration: 8000 });
+      } else if (error instanceof Error) {
+        const msg = `Network / runtime error: ${error.message}`;
+        console.error("[EmailJS]", msg, error);
+        toast.error(msg, { duration: 8000 });
+      } else {
+        console.error("[EmailJS] Unknown error:", error);
+        toast.error(`Unknown error: ${JSON.stringify(error)}`, { duration: 8000 });
+      }
     } finally {
       setIsSubmitting(false);
     }
