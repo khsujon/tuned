@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Menu, X, Mic2, Settings2, Sliders, Speaker,
-  ShieldCheck, Wrench, Truck, Sparkles,
   MapPin, Mail, Phone, ArrowRight, CheckCircle2, Quote, Loader2,
 } from "lucide-react";
 import emailjs from "@emailjs/browser";
@@ -55,13 +54,6 @@ const services = [
     title: "System Tuning & Engineering",
     desc: "Professional front-of-house and monitor mixing, system optimization, and freelance engineering for venues and touring acts.",
   },
-];
-
-const highlights = [
-  { icon: ShieldCheck, title: "Certified Audio Engineers", desc: "Expert mixing for any crowd size." },
-  { icon: Wrench, title: "Pro-Grade Equipment", desc: "Meticulously maintained, industry-standard gear." },
-  { icon: Truck, title: "Seamless DMV Logistics", desc: "On-time delivery, setup, and strike." },
-  { icon: Sparkles, title: "Custom Tailored Solutions", desc: "From intimate panels to massive outdoor concerts." },
 ];
 
 type GearCategory = "consoles" | "speakers" | "microphones";
@@ -431,12 +423,12 @@ export default function App() {
               Serving DC · Maryland · Virginia
             </div>
             <h1 className="mt-6 max-w-3xl text-4xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">
-              Engineered for the Crowd.{" "}
-              <span className="text-gradient-primary">Built for the Mix.</span>
+              Community shows deserve{" "}
+              <span className="text-gradient-primary">to sound professional too.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
               Professional live sound production with premium gear, optimized for
-              small-to-medium events of 100 to 1,000 people across the DMV area.
+              events of 100 to 1,000 people across the DMV area.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-glow">
@@ -493,7 +485,7 @@ export default function App() {
         <section id="gear" className="relative border-t border-border/60 py-24 sm:py-32">
           <div className="absolute inset-0 -z-10 grid-pattern opacity-30" />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeader eyebrow="Gear Inventory" title="The rig behind 2,000-person events." />
+            <SectionHeader eyebrow="Gear Inventory" title="The rig behind 1,000-person events." />
 
             <Tabs defaultValue="speakers" className="mt-12">
               <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 bg-transparent p-0">
@@ -571,23 +563,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* HIGHLIGHTS */}
-        <section className="border-t border-border/60 py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <SectionHeader eyebrow="Why Tuned" title="Engineered for the room. Built for the road." />
-            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {highlights.map((h) => (
-                <div key={h.title} className="rounded-2xl border border-border bg-card p-6">
-                  <span className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/30">
-                    <h.icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-5 text-base font-bold">{h.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{h.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* REVIEWS */}
         <section id="reviews" className="border-t border-border/60 py-24 sm:py-32">
@@ -910,7 +885,7 @@ function LeadershipSection() {
               Today, he leads the company, blending technical expertise
               with a musician's ear to make every event sound its best.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-6 lg:justify-start">
+            {/* <div className="mt-8 flex flex-wrap justify-center gap-6 lg:justify-start">
               {[
                 { k: "5+", v: "Years of Experience" },
                 { k: "50+", v: "Events Engineered" },
@@ -922,7 +897,7 @@ function LeadershipSection() {
                   <div className="mt-1 text-[10px] uppercase tracking-widest text-muted-foreground">{s.v}</div>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
